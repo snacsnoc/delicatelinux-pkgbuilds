@@ -1,0 +1,7 @@
+# Color scheme for PKGBUILDS
+syntax "pkgbuild" "[\.]*KGBUILD$"
+color green "\<(pkgname|pkgver|pkgrel|pkgdesc|force|url|license|backup|makedepends|depends|source|md5sums|groups|confilcts|provides|replaces)\>"
+color red "\<(cp|mv|cd|mkdir|return)\>"
+color brightcyan "\<(configure|make|install)\>"
+color cyan "#.*"
+color brightwhite "\<(DESTDIR|PREFIX|prefix|sysconfdir|datadir|libdir|includedir|mandir)\>"

@@ -1,0 +1,21 @@
+# Maintainer: Easton Elliott <easton@geekness.eu>
+# Thanks to: dorphell <dorphell@archlinux.org>
+pkgname=bitchx
+pkgver=1.1
+pkgrel=1
+pkgdesc="A console-based IRC client"
+depends=('ncurses')
+source=(http://www.bitchx.com/download/ircii-pana-$pkgver-final.tar.gz \
+        gcc34.patch)
+md5sums=('611d2dda222f00c10140236f4c331572' '95973485a5a745af87c7bdc9fb6ca0c6')
+
+build() {
+  cd $startdir/src/BitchX
+  patch -Np0 -i ../gcc34.patch
+  sed -i 's|#undef LATIN1|#define LATIN1|' include/config.h
+  ./configure --prefix=/usr
+  make || return 1
+  make prefix=$startdir/pkg/usr install
+  cd $startdir/pkg/usr/bin
+  rm -f BitchX && ln -s BitchX-$pkgver-final BitchX
+}

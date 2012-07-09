@@ -1,0 +1,35 @@
+# Maintainer: Easton Elliott <easton@geekness.eu>
+#
+# Thanks to:  Christoph Vigano <mail at cvigano dot de>
+# Marcin Karpezo <sirmacik at gmail dot com>
+# Michael Rosset <mrosset@uarch.org>
+
+
+pkgname=git
+pkgver=1.7.11.1
+pkgrel=2
+pkgdesc="A distributed version control system"
+url="http://git-scm.com/"
+license=('GPL2')
+depends=('curl' 'expat>=2.0' 'perl' 'openssl' 'libpcre' 'asciidoc' 'xmlto')
+makedepends=('python')
+
+source=(http://git-core.googlecode.com/files/${pkgname}-${pkgver}.tar.gz)
+
+md5sums=('2c5d85ec5b6e08986d942461debc9d6b')
+
+build() {
+  cd ${srcdir}/$pkgname-$pkgver
+
+  ./configure --prefix=/usr --host=$CHOST --build=$CHOST
+
+  make prefix=/usr    DESTDIR=${pkgdir}  \
+	NEEDS_LIBICONV="No" \
+	USE_ST_TIMESPEC="YesPlease" NO_NSEC=Yes
+
+
+  make prefix=/usr   \
+	NEEDS_LIBICONV="No" \
+	USE_ST_TIMESPEC="YesPlease" NO_NSEC=Yes DESTDIR=${pkgdir} install
+
+}

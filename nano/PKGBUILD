@@ -1,0 +1,67 @@
+# Maintainer: Easton Elliott <easton@geekness.eu>
+# Thanks to: baudolino <baudolino@linexa.de>
+
+pkgname=nano
+pkgver=2.2.6
+pkgrel=1
+pkgdesc="Pico editor clone with enhancements"
+license=('GPL3')
+url="http://www.nano-editor.org"
+depends=('ncurses')
+source=(http://www.nano-editor.org/dist/v2.2/$pkgname-$pkgver.tar.gz \
+nanorc \
+asm.nanorc \
+c.nanorc \
+css.nanorc \
+gross.nanorc \
+html.nanorc \
+java.nanorc \
+makefile.nanorc \
+man.nanorc \
+mutt.nanorc \
+nanorc.nanorc \
+patch.nanorc \
+pkgbuild.nanorc \
+postgresql.nanorc \
+pov.nanorc \
+python.nanorc \
+ruby.nanorc \
+sh.nanorc \
+tex.nanorc \
+xml.nanorc \
+xorg.nanorc \
+skel_nanorc)
+
+md5sums=('03233ae480689a008eb98feb1b599807' '2dbc16d2020888a3831c14a19a92e9c2'\
+         '709ffbab18094bc0929786a96dfdd045' '874cd4f33e74ffef3521abfa93355c45'\
+         '6427a6b284beb00c054670d940d6c8da' 'a924829a3699c7344149c60809f61a00'\
+         'ff29a0f2f8cdc5560dfb45a5b8a4c001' '6cb0c15ad9e8521cc726caa1f197718d'\
+         'c71f0264ce5a89bd688b65ab554c2a07' 'be0ce67cbfee932fc30b2c8ecb32f685'\
+         '8c57444a19ff1fa0946ec6901a9fe695' '88d175aaad2470a383c13084e5fb0280'\
+         '965d372ca860b694b4d5e27f3cd304ca' '8be0ba73de89066590f573b41ba73a6b'\
+         'f29fe15c4e7a25fb17b5ee30aba17ba6' 'd99f5bca7f2150592aa212e4db2f86bc'\
+         'ff9829d20023114fe8053f3ad610c3a1' '2f219ac15442ea4cd56253d3adde987f'\
+         '0dce00dc1a5c2ed340958cabe0d864c6' 'b031088bfa861069052e80c16610f418'\
+         '648e5e1ab51b4b232ca36c77ea28dc1c' '7fe95a5ece266201497f78c1ed30bf23'\
+         '905c63da7e02e2efff6faf795acc8fb2')
+
+
+build() {
+  cd $srcdir/$pkgname-$pkgver
+  ./configure \
+  --prefix=/usr \
+  --sysconfdir=/etc \
+  --enable-color \
+  --enable-nanorc \
+  --enable-multibuffer 
+  --enable-utf8
+   
+  make || return 1
+  make DESTDIR=$pkgdir install
+
+  install -v -D -m644 $srcdir/nanorc $pkgdir/etc/nanorc
+  install -v -D -m644 $srcdir/skel_nanorc $pkgdir/etc/skel.nanorc
+  cp -v $srcdir/*.nanorc $pkgdir/usr/share/nano
+  
+}
+

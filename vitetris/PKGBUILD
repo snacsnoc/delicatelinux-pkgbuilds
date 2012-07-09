@@ -1,0 +1,22 @@
+# Maintainer Easton E. <easton@geekness.eu>
+# Thanks to: Jaroslav Lichtblau <dragonlord@aur.archlinux.org>
+
+pkgname=vitetris
+pkgver=0.57
+pkgrel=1
+pkgdesc="Terminal-based Tetris clone with multiplayer support"
+url="http://victornils.net/tetris"
+license=('BSD')
+depends=('ncurses')
+source=(http://victornils.net/tetris/$pkgname-$pkgver.tar.gz)
+md5sums=('07d02ee03e2edd66a8741729e237f21f')
+build() {
+  cd ${srcdir}/$pkgname-$pkgver
+  ./configure --prefix=${pkgdir}/usr --docdir=${pkgdir}/usr/share/$pkgname --without-x --with-ncurses || return 1
+  make || return 1
+  make gameserver || return 1
+  make install || return 1
+  install -D -m755 gameserver ${pkgdir}/usr/bin/$pkgname-gameserver || return 1                 
+  install -D -m644 licence.txt ${pkgdir}/usr/share/licenses/$pkgname/LICENSE || return 1
+}
+

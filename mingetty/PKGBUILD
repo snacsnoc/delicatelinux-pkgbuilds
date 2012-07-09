@@ -1,0 +1,23 @@
+# Maintainer: Easton Elliott <easton@geekness.eu
+
+pkgname=mingetty
+pkgver=1.08
+pkgrel=1
+pkgdesc="A minimal getty for use on virtual consoles"
+url="http://sourceforge.net/projects/mingetty"
+license=('GPL')
+source=(http://dl.sourceforge.net/projects/mingetty/$pkgname-$pkgver.tar.gz \
+	COPYING)
+
+md5sums=('2a75ad6487ff271424ffc00a64420990' '0c56db0143f4f80c369ee3af7425af6e')
+
+build() {
+  cd $srcdir/$pkgname-$pkgver
+
+  mkdir -p "$pkgdir/usr/share/man/man8"
+  make
+
+  install -Dm755 $pkgname "$pkgdir/sbin/$pkgname"
+  install -Dm644 $pkgname.8 "$pkgdir/usr/share/man/man8/$pkgname.8"
+  install -m644 -D COPYING "$pkgdir/usr/share/licenses/$pkgname/COPYING"
+}

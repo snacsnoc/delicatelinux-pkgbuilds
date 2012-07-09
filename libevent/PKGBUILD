@@ -1,0 +1,20 @@
+# Maintainer: Easton Elliott <easton@geekness.eu>
+# Thanks to: Elias <elias@linexa.de>
+
+
+pkgname=libevent
+pkgver=1.4.14b
+pkgrel=2
+pkgdesc="An event notification library"
+license=('BSD')
+url="http://www.libevent.org"
+depends=('uclibc' 'python')
+source=("https://github.com/downloads/libevent/libevent/libevent-$pkgver-stable.tar.gz")
+md5sums=('a00e037e4d3f9e4fe9893e8a2d27918c')
+build() {
+  cd $srcdir/$pkgname-$pkgver-stable
+  sed -i 's#python#python2#' event_rpcgen.py
+  ./configure --prefix=/usr --sysconfdir=/etc
+   make || return 1
+    make DESTDIR=$pkgdir install || return 1
+}

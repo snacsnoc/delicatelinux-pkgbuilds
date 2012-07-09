@@ -1,0 +1,32 @@
+# Maintainer: Easton Elliott <easton@geekness.eu>
+
+pkgname=nginx
+pkgver=1.2.2
+pkgrel=1
+pkgdesc="A high-performance HTTP server, reverse proxy and IMAP/POP3 proxy server"
+url="http://nginx.org/"
+license=(custom)
+depends=(zlib openssl)
+source=(http://nginx.org/download/$pkgname-$pkgver.tar.gz \
+   LICENSE \
+   nginx.rc)
+
+
+ build(){
+ cd "$srcdir/$pkgname-$pkgver"
+   ./configure \
+     --prefix=/usr \
+     --conf-path=/etc/nginx/nginx.conf \
+     --sbin-path=/usr/sbin/nginx \
+     --with-mail  --with-http_ssl_module \
+     --with-http_gzip_static_module \
+     --group=www \
+     --with-ipv6
+
+     make
+     make DESTDIR=$pkgdir install
+
+
+     install -D -m755 $srcdir/nginx.rc $pkgdir/etc/rc.d/nginx
+     install -D LICENSE $pkgdir/usr/share/licenses/nginx/LICENSE
+ }
