@@ -1,0 +1,28 @@
+# Maintainer: Easton Elliott <easton@geekness.eu>
+# Thanks to: Jan de Groot <jgc@archlinux.org>
+
+pkgname=libxft
+pkgver=2.3.1
+pkgrel=1
+pkgdesc="FreeType-based font drawing library for X"
+license=('custom')
+url="http://xorg.freedesktop.org/"
+depends=('fontconfig>=2.5.92' 'libxrender')
+
+source=("${url}/releases/individual/lib/libXft-${pkgver}.tar.bz2")
+
+md5sums=('78d64dece560c9e8699199f3faa521c0')
+
+
+build() {
+
+  cd "${srcdir}/libXft-${pkgver}"
+  ./configure --prefix=/usr --sysconfdir=/etc --disable-static  \
+ 	--host=$CHOST --build=$CHOST
+
+  make
+  make DESTDIR="${pkgdir}" install
+  install -d -m755 "${pkgdir}/usr/share/licenses/${pkgname}"
+  install -m644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/"
+
+}

@@ -1,0 +1,18 @@
+# Maintainer: Easton Elliott <easton@geekness.eu>
+
+pkgname=tree
+pkgdesc="Recursive directory listing tool"
+pkgver=1.5.1.2
+pkgrel=1
+license=('GPL')
+url="http://mama.indstate.edu/users/ice/tree/"
+
+source=(ftp://mama.indstate.edu/linux/tree/old/${pkgname}-${pkgver}.tgz)
+md5sums=('cf57d8b2ba43156faf9d75614a7a95d5')
+
+build(){
+	cd "$srcdir/${pkgname}-${pkgver}"
+	
+	make
+	make prefix="${pkgdir}/usr" install
+}

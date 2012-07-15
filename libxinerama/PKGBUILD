@@ -1,0 +1,25 @@
+# Maintainer: Easton Elliott <easton@geekness.eu>
+# Thanks to: Jan de Groot <jgc@archlinux.org>
+# Alexander Baldeck <alexander@archlinux.org>
+
+pkgname=libxinerama
+pkgver=1.1.2
+pkgrel=1
+pkgdesc="X11 Xinerama extension library"
+url="http://xorg.freedesktop.org/"
+license=('custom')
+depends=('libxext' 'xineramaproto')
+
+source=("${url}/releases/individual/lib/libXinerama-${pkgver}.tar.bz2")
+md5sums=('cb45d6672c93a608f003b6404f1dd462')
+
+
+build() {
+  cd "${srcdir}/libXinerama-${pkgver}"
+  ./configure --prefix=/usr --host=$CHOST --build=$CHOST
+  make
+
+  make DESTDIR="${pkgdir}" install
+  install -m755 -d "${pkgdir}/usr/share/licenses/${pkgname}"
+  install -m644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/"
+}

@@ -1,0 +1,30 @@
+# Maintainer: Easton Elliott <easton@geekness.eu>
+# Thanks to:  Devin Cofer <ranguvar{AT]archlinux[DOT}us>
+# Cainã Costa <sryche@archlinux-br.org>
+# Patrick Bartels <p4ddy.b@gmail.com>
+
+pkgname=fluxbox
+pkgdesc="Lightweight and flexible window manager"
+pkgver=1.3.2
+pkgrel=1
+license=('MIT')
+url="http://www.fluxbox.org/"
+depends=('libxft' 'libxpm' 'libxrandr' 'imlib2' 'libxinerama')
+source=(http://sourceforge.net/projects/${pkgname}/files/${pkgname}/${pkgver}/${pkgname}-${pkgver}.tar.gz \
+	fluxbox.desktop)
+
+    
+md5sums=('52e76de0ae96d8c5e87374661d0c7112' 'eeae9c88a2526ac0bd8afcd9ce97f9ed')
+
+
+build() {
+	cd "$srcdir/${pkgname}-${pkgver}"
+
+	./configure --prefix=/usr --enable-xft --enable-imlib2 \
+	            --enable-xinerama --host=$CHOST --build=$CHOST
+	make
+	make DESTDIR="${pkgdir}" install
+
+	install -D -m644 ../fluxbox.desktop "${pkgdir}/usr/share/xsessions/fluxbox.desktop"
+ 	install -D -m644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+}

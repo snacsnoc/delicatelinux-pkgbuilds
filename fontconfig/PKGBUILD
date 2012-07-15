@@ -1,0 +1,34 @@
+# Maintainer: Easton Elliott <easton@geekness.eu>
+# Thanks to: Jan de Groot <jgc@archlinux.org>
+
+pkgname=fontconfig
+pkgver=2.6.0
+pkgrel=1
+pkgdesc="A library for configuring and customizing font access"
+
+url="http://www.fontconfig.org/release/"
+license=('custom')
+
+depends=('expat' 'freetype2')
+
+
+source=(http://www.fontconfig.org/release/$pkgname-$pkgver.tar.gz)
+
+md5sums=('ab54ec1d4ddd836313fdbc0cd5299d6d')
+
+
+build() {
+  cd "$srcdir/$pkgname-$pkgver"
+  ./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var \
+	--host=$CHOST --build=$CHOST
+  make
+
+  make DESTDIR="$pkgdir" install
+  install -m644 "$srcdir/29-replace-bitmap-fonts.conf" \
+      "$pkgdir/etc/fonts/conf.avail"
+  rm -f "$pkgdir"/etc/fonts/conf.d/*.conf
+
+  #Install license
+  install -m755 -d "$pkgdir/usr/share/licenses/$pkgname"
+  install -m644 COPYING "$pkgdir/usr/share/licenses/$pkgname"
+}
