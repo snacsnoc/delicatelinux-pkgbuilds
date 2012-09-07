@@ -1,0 +1,21 @@
+# Maintainer: Easton Elliott <easton@geekness.eu>
+# Thanks to: Eric Bélanger <eric@archlinux.org>
+
+pkgname=intltool
+pkgver=0.50.2
+pkgrel=1
+pkgdesc="The internationalization tool collection"
+url="https://edge.launchpad.net/intltool"
+license=('GPL')
+depends=('perl-xml-parser')
+source=(http://edge.launchpad.net/intltool/trunk/${pkgver}/+download/${pkgname}-${pkgver}.tar.gz{,.asc})
+md5sums=('23fbd879118253cb99aeac067da5f591' 'f11cfd28a4127cb34c37ab8c5c80e601')
+
+
+build() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  ./configure --prefix=/usr --host=$CHOST --build=$CHOST
+  make
+  make DESTDIR="${pkgdir}" install
+  install -D -m644 doc/I18N-HOWTO "${pkgdir}/usr/share/doc/${pkgname}/I18N-HOWTO"
+}

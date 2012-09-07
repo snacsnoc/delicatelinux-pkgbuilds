@@ -1,0 +1,19 @@
+# Maintainer: Easton Elliott <easton@geekness.eu>
+
+pkgname=transmission
+pkgdesc="Fast, easy, and free BitTorrent client"
+pkgver=1.80
+pkgrel=1
+url="http://www.transmissionbt.com/"
+license=('MIT')
+depends=('curl' 'intltool' 'perl-xml-parser')
+source=(http://download-origin.transmissionbt.com/files/$pkgname-$pkgver.tar.xz)
+md5sums=('900bfba438b36e7326d1d51af775eb61')
+
+build() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  ./configure --prefix=/usr --host=$CHOST --build=$CHOST
+  make
+  make DESTDIR=$pkgdir install
+  install -D -m644 COPYING "$pkgdir/usr/share/licenses/transmission/COPYING"
+}
